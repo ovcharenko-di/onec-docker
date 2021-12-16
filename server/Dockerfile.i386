@@ -21,17 +21,13 @@ ARG gosu_ver=1.11
 ARG nls_enabled=false
 ENV nls=$nls_enabled
 
-COPY --from=downloader /tmp/*.deb /tmp/
+COPY --from=downloader /tmp/*.run /tmp/
 
 WORKDIR /tmp
 
 SHELL ["/bin/bash", "-c"]
-RUN set -xe; \
-  if [ "$nls" = true ]; then \
-    dpkg -i 1c-enterprise*-{common,server}*.deb; \
-  else \
-    dpkg -i 1c-enterprise*-{common,server}_*.deb; \
-  fi
+RUN chmod +x setup-full-${ONEC_VERSION}-i386.run; sync; \
+  & ./setup-full-${ONEC_VERSION}-i386.run --mode unattended --enable-components server,ru
 
 # create symlink to current 1c:enterprise directory
 COPY ./scripts/create-symlink-to-current-1cv8.sh /create-symlink-to-current-1cv8.sh

@@ -20,7 +20,7 @@ FROM ubuntu:18.04 as base
 ARG nls_enabled=false
 ENV nls=$nls_enabled
 
-COPY --from=downloader /tmp/*.deb /tmp/
+COPY --from=downloader /tmp/*.run /tmp/
 
 RUN set -xe \
   && apt-get update \
@@ -30,12 +30,8 @@ RUN set -xe \
 WORKDIR /tmp
 
 SHELL ["/bin/bash", "-c"]
-RUN set -xe; \
-  if [ "$nls" = true ]; then \
-    dpkg -i 1c-enterprise83-thin-client*.deb; \
-  else \
-    dpkg -i 1c-enterprise83-thin-client_*.deb; \
-  fi
+RUN chmod +x setup-thin-${ONEC_VERSION}-x86_64.run; sync; \
+  & ./setup-thin-${ONEC_VERSION}-x86_64.run --mode unattended --enable-components thin-client,ru
 
 # create symlink to current 1c:enterprise directory
 COPY ./scripts/create-symlink-to-current-1cv8.sh /create-symlink-to-current-1cv8.sh

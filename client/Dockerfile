@@ -13,15 +13,15 @@ RUN apk --no-cache add bash curl grep \
   && chmod +x /download.sh \
   && sync; /download.sh \
   && for file in *.tar.gz; do tar -zxf "$file"; done \
-  && rm -rf *.tar.gz \
-  && rm ./*-thin-*.deb
+  && rm -rf *.tar.gz
 
 FROM ubuntu:18.04 as base
 
 ARG nls_enabled=false
+ARG ONEC_VERSION
 ENV nls=$nls_enabled
 
-COPY --from=downloader /tmp/*.deb /tmp/
+COPY --from=downloader /tmp/*.run /tmp/
 
 RUN set -xe \
   && apt-get update \
@@ -31,13 +31,8 @@ RUN set -xe \
 WORKDIR /tmp
 
 SHELL ["/bin/bash", "-c"]
-RUN set -xe; \
-  if [ "$nls" = true ]; then \
-    dpkg -i 1c-enterprise*-{common,server}_*.deb; \
-    dpkg -i 1c-enterprise*-{common,client}*.deb; \
-  else \
-    dpkg -i 1c-enterprise*-{common,server,client}_*.deb; \
-  fi
+RUN chmod +x setup-full-${ONEC_VERSION}-x86_64.run; sync; \
+ ./setup-full-${ONEC_VERSION}-x86_64.run --mode unattended --enable-components client_full,ru
 
 # create symlink to current 1c:enterprise directory
 COPY ./scripts/create-symlink-to-current-1cv8.sh /create-symlink-to-current-1cv8.sh

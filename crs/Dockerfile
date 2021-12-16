@@ -18,20 +18,17 @@ RUN apk --no-cache add bash curl grep \
 FROM i386/debian:bullseye-slim as base
 
 ARG gosu_ver=1.11
+ARG ONEC_VERSION
 ARG nls_enabled=false
 ENV nls=$nls_enabled
 
-COPY --from=downloader /tmp/*.deb /tmp/
+COPY --from=downloader /tmp/*.run /tmp/
 
 WORKDIR /tmp
 
 SHELL ["/bin/bash", "-c"]
-RUN set -xe; \
-  if [ "$nls" = true ]; then \
-    dpkg -i 1c-enterprise*-{common,server,ws,crs}*.deb; \
-  else \
-    dpkg -i 1c-enterprise*-{common,server,ws,crs}_*.deb; \
-  fi
+RUN chmod +x setup-full-${ONEC_VERSION}-i386.run; sync; \
+  && ./setup-full-${ONEC_VERSION}-i386.run --mode unattended --enable-components ws,config_storage_server,ru
 
 # create symlink to current 1c:enterprise directory
 COPY ./scripts/create-symlink-to-current-1cv8.sh /create-symlink-to-current-1cv8.sh
