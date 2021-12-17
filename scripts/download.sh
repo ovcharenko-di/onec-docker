@@ -48,14 +48,14 @@ caption2="Дистрибутив для оффлайн установки 1C:EDT
 EDTPATHLINK=$(curl -s -G \
 -b /tmp/cookies.txt \
 --data-urlencode "nick=DevelopmentTools10" \
---data-urlencode "ver=$ONEC_VERSION" \
+--data-urlencode "ver=$EDT_VERSION" \
 https://releases.1c.ru/version_files | grep -oP "(?<=a href=\")[^\"]+path=(.*)(?=\">(?:$caption1|$caption2)<)" | grep -oP '(?<=path=).*')
 
-EDTLINK=$(curl -s -G \
+EDTLINK=$(curl -s -v -G \
     -b /tmp/cookies.txt \
     --data-urlencode "nick=DevelopmentTools10" \
-    --data-urlencode "ver=$ONEC_VERSION" \
-    --data-urlencode "path=$EDTPATHLINK" \
+    --data-urlencode "ver=$EDT_VERSION" \
+    --data "path=$EDTPATHLINK" \
     https://releases.1c.ru/version_file | grep -oP '(?<=a href=")[^"]+(?=">Скачать дистрибутив<)')
 else
 
