@@ -7,7 +7,4 @@ RUN opm install vanessa-runner \
   && opm install gitsync \
   && opm install deployka \
   && opm install add \
-  && opm install vanessa-automation \
-  # https://github.com/silverbulleters/vanessa-runner/pull/301
-  && sed -i 's/#Использовать JSON/#Использовать json/g' \
-    /usr/share/oscript/lib/vanessa-runner/src/Модули/ГенерацияОтчетов.os
+  && opm install vanessa-automation
