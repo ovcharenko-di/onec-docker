@@ -3,7 +3,7 @@ ARG BASE_IMAGE=edt
 ARG BASE_TAG=2021.3
 ARG EDT_PLUGINS=/opt/1C/1CE/components/1c-edt-${BASE_TAG}*-x86_64/plugins
 
-FROM ${DOCKER_USERNAME}/${BASE_IMAGE}:${BASE_TAG} as base
+FROM ${DOCKER_USERNAME}/${BASE_IMAGE}:${BASE_TAG} AS base
 
 FROM i386/debian:bullseye-slim
 COPY --from=base ${EDT_PLUGINS}/com._1c.g5.v8.dt.debug.core_*.jar ${EDT_PLUGINS}/com._1c.g5.v8.dt.debug.model_*.jar /opt/1C/1CE/
