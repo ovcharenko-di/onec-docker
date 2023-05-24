@@ -74,6 +74,7 @@ docker build \
     --build-arg DOCKER_USERNAME=$DOCKER_USERNAME \
     --build-arg BASE_IMAGE=onec-client-vnc-oscript-jdk-testutils \
     --build-arg BASE_TAG=$ONEC_VERSION \
+    --build-arg EDT_VERSION=$EDT_VERSION \
     -t $DOCKER_USERNAME/onec-client-vnc-oscript-jdk-testutils-edt-debug:$ONEC_VERSION \
     -f edt-debug/Dockerfile \
     $last_arg
