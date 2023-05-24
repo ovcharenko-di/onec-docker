@@ -1,14 +1,15 @@
 ARG DOCKER_USERNAME=library
 ARG BASE_IMAGE=edt
-ARG BASE_TAG=2021.3
+ARG BASE_TAG
+ARG EDT_VERSION=2021.3
 
-FROM ${DOCKER_USERNAME}/${BASE_IMAGE}:${BASE_TAG} AS base
+FROM ${DOCKER_USERNAME}/edt:${EDT_VERSION} AS base
 
-FROM adoptopenjdk:14-hotspot
+FROM ${DOCKER_USERNAME}/${BASE_IMAGE}:${BASE_TAG}
 LABEL maintainer="Dima Ovcharenko <d.ovcharenko90@gmail.com>, Korus Consulting LLC"
 
-ARG BASE_TAG
-ARG EDT_PLUGINS=/opt/1C/1CE/components/1c-edt-${BASE_TAG}*-x86_64/plugins
+ARG EDT_VERSION
+ARG EDT_PLUGINS=/opt/1C/1CE/components/1c-edt-${EDT_VERSION}*-x86_64/plugins
 
 COPY --from=base ${EDT_PLUGINS}/com._1c.g5.v8.dt.debug.core_*.jar ${EDT_PLUGINS}/com._1c.g5.v8.dt.debug.model_*.jar /opt/1C/1CE/
 

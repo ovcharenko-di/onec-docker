@@ -12,6 +12,9 @@ if [ $NO_CACHE = 'true' ] ; then
     last_arg='--no-cache .'
 fi
 
+edt_version=$EDT_VERSION
+edt_escaped="${edt_version// /_}"
+
 docker build \
     --pull \
     --build-arg ONEC_USERNAME=$ONEC_USERNAME \
@@ -28,6 +31,13 @@ docker build \
     --pull \
     --build-arg ONEC_USERNAME=$ONEC_USERNAME \
     --build-arg ONEC_PASSWORD=$ONEC_PASSWORD \
+    --build-arg EDT_VERSION="$EDT_VERSION" \
+    -t $DOCKER_USERNAME/edt:$edt_escaped \
+    -f edt/Dockerfile \
+    $last_arg
+
+docker build \
+    --pull \
     --build-arg ONEC_VERSION=$ONEC_VERSION \
     --build-arg DOCKER_USERNAME=$DOCKER_USERNAME \
     -t $DOCKER_USERNAME/onec-client-vnc:$ONEC_VERSION \
@@ -63,6 +73,14 @@ docker build \
 docker build \
     --build-arg DOCKER_USERNAME=$DOCKER_USERNAME \
     --build-arg BASE_IMAGE=onec-client-vnc-oscript-jdk-testutils \
+    --build-arg BASE_TAG=$ONEC_VERSION \
+    -t $DOCKER_USERNAME/onec-client-vnc-oscript-jdk-testutils-edt-debug:$ONEC_VERSION \
+    -f edt-debug/Dockerfile \
+    $last_arg
+
+docker build \
+    --build-arg DOCKER_USERNAME=$DOCKER_USERNAME \
+    --build-arg BASE_IMAGE=onec-client-vnc-oscript-jdk-testutils-edt-debug \
     --build-arg BASE_TAG=$ONEC_VERSION \
     -t $DOCKER_USERNAME/base-jenkins-agent:$ONEC_VERSION \
     -f jenkins-agent/Dockerfile \
