@@ -14,7 +14,7 @@ COPY --from=base ${EDT_PLUGINS}/com._1c.g5.v8.dt.debug.core_*.jar ${EDT_PLUGINS}
 
 ADD https://github.com/1c-syntax/Coverage41C/releases/download/v2.7.2/Coverage41C-2.7.2.tar /opt/
 
-RUN tar xzf /opt/Coverage41C-2.7.2.tar -C / \
+RUN tar xf /opt/Coverage41C-2.7.2.tar -C /opt/ \
   && rm -rf /opt/Coverage41C-2.7.2.tar
 
 ENV EDT_LOCATION="/opt/1C/1CE/"
