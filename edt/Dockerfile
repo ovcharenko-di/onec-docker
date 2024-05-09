@@ -2,6 +2,7 @@
 ARG DOWNLOADER_REGISTRY_URL
 ARG DOWNLOADER_IMAGE
 ARG DOWNLOADER_TAG
+ARG COVERAGE41C_VERSION=2.7.2
 
 ARG BASE_IMAGE=eclipse-temurin
 ARG BASE_TAG=11
@@ -65,6 +66,11 @@ ENV LANG ru_RU.UTF-8
 # Install EDT
 COPY --from=downloader /tmp/${downloads} /tmp/${downloads}
 
+ADD https://github.com/1c-syntax/Coverage41C/releases/download/v${COVERAGE41C_VERSION}/Coverage41C-${COVERAGE41C_VERSION}.tar /tmp/
+
+RUN "tar xf /tmp/Coverage41C-${COVERAGE41C_VERSION}.tar -C /opt/ \
+  && rm -rf /tmp/Coverage41C-${COVERAGE41C_VERSION}.tar"
+ 
 WORKDIR /tmp/${downloads}
 
 RUN chmod +x ./1ce-installer-cli \
@@ -72,4 +78,4 @@ RUN chmod +x ./1ce-installer-cli \
   && rm -rf /tmp/* \
   && mv $(dirname $(find /opt/1C/1CE -name ring)) /opt/1C/1CE/components/1c-enterprise-ring
 
-ENV PATH="/opt/1C/1CE/components/1c-enterprise-ring:$PATH"
+ENV PATH="/opt/Coverage41C-${COVERAGE41C_VERSION}/bin:/opt/1C/1CE/components/1c-enterprise-ring:$PATH"
