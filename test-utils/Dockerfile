@@ -12,6 +12,7 @@ RUN apt-get update \
     net-tools \
     pandoc \
     scrot \
+    xdotool \
   && rm -rf /var/lib/apt/lists/*
 
 RUN echo '#!/bin/bash\n\nscrot "${@:2}"' | tee /usr/local/bin/nircmd \
