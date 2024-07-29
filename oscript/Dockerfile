@@ -42,7 +42,7 @@ RUN chmod +x /remove-dst-root-ca-x3.sh \
 ARG OVM_REPOSITORY_OWNER=oscript-library
 ARG OVM_VERSION=v1.2.3
 ARG ONESCRIPT_VERSION=stable
-ARG ONESCRIPT_PACKAGES="add gitsync vanessa-runner stebi edt-ripper"
+ARG ONESCRIPT_PACKAGES="add@SNAPSHOT gitsync vanessa-runner stebi edt-ripper"
 
 RUN wget https://github.com/${OVM_REPOSITORY_OWNER}/ovm/releases/download/${OVM_VERSION}/ovm.exe \
   && mv ovm.exe /usr/local/bin/ \
