@@ -30,6 +30,7 @@ RUN apt-get update \
     ca-certificates-mono \
     libmono-i18n4.0-all \
     libmono-system-runtime-serialization4.0-cil \
+    libmono-system-data4.0-cil \
   && rm -rf /etc/apt/sources.list.d/mono-official-stable.list /etc/apt/keyrings/mono-official-stable.gpg \
   && apt-get update \
   && cert-sync --user /etc/ssl/certs/ca-certificates.crt \
@@ -48,7 +49,7 @@ RUN chmod +x /remove-dst-root-ca-x3.sh \
 ARG OVM_REPOSITORY_OWNER=oscript-library
 ARG OVM_VERSION=v1.6.1
 ARG ONESCRIPT_VERSION=stable
-ARG ONESCRIPT_PACKAGES="add@SNAPSHOT gitsync vanessa-runner stebi edt-ripper"
+ARG ONESCRIPT_PACKAGES="add@SNAPSHOT gitsync vanessa-runner irac stebi edt-ripper"
 
 RUN wget https://github.com/${OVM_REPOSITORY_OWNER}/ovm/releases/download/${OVM_VERSION}/ovm.exe \
   && mv ovm.exe /usr/local/bin/ \
