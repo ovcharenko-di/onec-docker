@@ -8,11 +8,21 @@ if %DOCKER_SYSTEM_PRUNE%=="true" docker system prune -af
 
 if %ERRORLEVEL% neq 0 goto end
 
+for /f "delims=." %%a in ("%EDT_VERSION%") do set EDT_MAJOR_VERSION=%aa
+if %EDT_MAJOR_VERSION% GEQ "2024" (
+  set BASE_IMAGE="azul/zulu-openjdk"
+  set BASE_TAG="17"
+) else (
+  set BASE_IMAGE="eclipse-temurin"
+  set BASE_TAG="11"
+)
+
+if %ERRORLEVEL% neq 0 goto end
+
 if %NO_CACHE%=="true" (SET last_arg="--no-cache .") else (SET last_arg=".")
 
 set edt_version=%EDT_VERSION%
 set edt_escaped=%edt_version: =_%
-
 
 docker build ^
 	--pull ^
@@ -28,6 +38,8 @@ docker build ^
 	--build-arg ONEC_USERNAME=%ONEC_USERNAME% ^
 	--build-arg ONEC_PASSWORD=%ONEC_PASSWORD% ^
     --build-arg EDT_VERSION=%EDT_VERSION% ^
+    --build-arg BASE_IMAGE=%BASE_IMAGE% ^
+    --build-arg BASE_TAG=%BASE_TAG% ^
     --build-arg DOCKER_REGISTRY_URL=%DOCKER_REGISTRY_URL% ^
     --build-arg DOWNLOADER_IMAGE=oscript-downloader ^
     --build-arg DOWNLOADER_TAG=latest ^

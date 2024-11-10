@@ -38,7 +38,7 @@ ENV LC_ALL ru_RU.UTF-8
 
 RUN /download.sh "$ONEC_USERNAME" "$ONEC_PASSWORD" "$EDT_VERSION" "edt"
 
-FROM ${DOCKER_REGISTRY_URL}/${BASE_IMAGE}:${BASE_TAG}
+FROM ${BASE_IMAGE}:${BASE_TAG}
 
 LABEL maintainer="Nikita Gryzlov <NikGryzlov@1bit.com>, FirstBit"
 
@@ -70,6 +70,8 @@ WORKDIR /tmp/${downloads}
 RUN chmod +x ./1ce-installer-cli \
   && ./1ce-installer-cli install all --ignore-hardware-checks --ignore-signature-warnings\
   && rm -rf /tmp/* \
-  && mv $(dirname $(find /opt/1C/1CE -name ring)) /opt/1C/1CE/components/1c-enterprise-ring
+  && mv $(dirname $(find /opt/1C/1CE -name ring)) /opt/1C/1CE/components/1c-enterprise-ring \
+  #1cedtcli отсутствует в EDT версии <2023.1.0
+  && if [ -n "$(find /opt/1C/1CE -name 1cedtcli)" ]; then mv $(dirname $(find /opt/1C/1CE -name 1cedtcli)) /opt/1C/1CE/components/1cedtcli; fi
 
-ENV PATH="/opt/1C/1CE/components/1c-enterprise-ring:$PATH"
+ENV PATH="/opt/1C/1CE/components/1c-enterprise-ring:/opt/1C/1CE/components/1cedtcli:$PATH"

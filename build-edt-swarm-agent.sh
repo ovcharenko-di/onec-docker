@@ -14,6 +14,15 @@ if [ "${DOCKER_SYSTEM_PRUNE}" = 'true' ] ; then
     docker system prune -af
 fi
 
+#Если версия EDT >= 2024.1.0, использовать JDK 17
+if [[ "$(printf "%s\n" "$EDT_VERSION" "2024" | sort -V | head -n 1)" == "2024" ]]; then
+  BASE_IMAGE="azul/zulu-openjdk"
+  BASE_TAG="17"
+else
+  BASE_IMAGE="eclipse-temurin"
+  BASE_TAG="11"
+fi
+
 last_arg='.'
 if [ "${NO_CACHE}" = 'true' ] ; then
     last_arg='--no-cache .'
@@ -37,6 +46,8 @@ docker build \
     --build-arg ONEC_USERNAME=$ONEC_USERNAME \
     --build-arg ONEC_PASSWORD=$ONEC_PASSWORD \
     --build-arg EDT_VERSION="$EDT_VERSION" \
+    --build-arg BASE_IMAGE=$BASE_IMAGE \
+    --build-arg BASE_TAG=$BASE_TAG \
     --build-arg DOWNLOADER_REGISTRY_URL=$DOCKER_REGISTRY_URL \
     --build-arg DOWNLOADER_IMAGE=oscript-downloader \
     --build-arg DOWNLOADER_TAG=latest \
