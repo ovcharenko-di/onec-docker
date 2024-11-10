@@ -21,7 +21,7 @@ fi
 
 # если устанавливаем Coverage41C, то предварительно нужно собрать образы EDT
 if [[ $COVERAGE41C_VERSION != "" ]] ; then
-  ./build-edt-swarm-agent.sh
+  ./build-edt-k8s-agent.sh
 fi
 
 docker build \
