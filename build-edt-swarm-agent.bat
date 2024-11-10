@@ -11,7 +11,7 @@ if %ERRORLEVEL% neq 0 goto end
 for /f "delims=." %%a in ("%EDT_VERSION%") do set EDT_MAJOR_VERSION=%aa
 if %EDT_MAJOR_VERSION% GEQ "2024" (
   set BASE_IMAGE="azul/zulu-openjdk"
-  set BASE_TAG="17.0.13-jdk"
+  set BASE_TAG="17"
 ) else (
   set BASE_IMAGE="eclipse-temurin"
   set BASE_TAG="11"

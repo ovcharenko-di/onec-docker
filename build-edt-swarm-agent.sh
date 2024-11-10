@@ -17,7 +17,7 @@ fi
 #Если версия EDT >= 2024.1.0, использовать JDK 17
 if [[ "$(printf "%s\n" "$EDT_VERSION" "2024" | sort -V | head -n 1)" == "2024" ]]; then
   BASE_IMAGE="azul/zulu-openjdk"
-  BASE_TAG="17.0.13-jdk"
+  BASE_TAG="17"
 else
   BASE_IMAGE="eclipse-temurin"
   BASE_TAG="11"
