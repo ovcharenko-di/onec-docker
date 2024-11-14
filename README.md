@@ -49,7 +49,7 @@ copy .onec.env.bat.example env.bat
 * EDT_VERSION - версия EDT. Обязательно заполнять только при сборке образов с EDT или при использовании замеров покрытия (см. `COVERAGE41C_VERSION`)
 * DOCKER_REGISTRY_URL - Адрес Docker-registry в котором будут храниться образы
 * COVERAGE41C_VERSION - версия Coverage41C
-Если заполнено, то при выполнении скриптов `build-base-*-agent.*` будет также собран образ `base-jenkins-coverage-agent`, подготовленный для сбора замеров покрытия с помощью Coverage41C. Требуется также указать значение для переменной EDT_VERSION.
+Используется при сборке агента скриптами `build-base-*-jenkins-coverage-agent.*`.
 
 Затем экспортируйте все необходимые переменные:
 
@@ -68,13 +68,13 @@ env.bat
 
 1. Если вам нужны образы для использования в docker-swarm:
 
-    * build-base-swarm-jenkins-agent.sh
+    * build-base-swarm-jenkins-agent.sh (или build-base-swarm-jenkins-coverage-agent.sh с замерами покрытия)
     * build-edt-swarm-agent.sh
     * build-oscript-swarm-agent.sh
 
-2. Если же вы планируете использовать k8s
+2. Если же вы планируете использовать k8s:
 
-    * build-base-k8s-jenkins-agent.sh
+    * build-base-k8s-jenkins-agent.sh (или build-base-k8s-jenkins-coverage-agent.sh с замерами покрытия)
     * build-edt-k8s-agent.sh
     * build-oscript-k8s-agent.sh
 
@@ -216,6 +216,7 @@ docker build --build-arg DOCKER_REGISTRY_URL=${DOCKER_REGISTRY_URL} \
   -t ${DOCKER_REGISTRY_URL}/runner:1.7.0 \
   -f vanessa-runner/Dockerfile .
 ```
+
 ## EDT
 [(Наверх)](#Оглавление)
 ```bash
