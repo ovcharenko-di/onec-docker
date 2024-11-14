@@ -1,5 +1,18 @@
 @echo off
 
+docker login -u %DOCKER_LOGIN% -p %DOCKER_PASSWORD% %DOCKER_REGISTRY_URL%
+
+if %ERRORLEVEL% neq 0 goto end
+
+if %DOCKER_SYSTEM_PRUNE%=="true" docker system prune -af
+
+if %ERRORLEVEL% neq 0 goto end
+
+if %NO_CACHE%=="true" (SET last_arg="--no-cache .") else (SET last_arg=".")
+
+set edt_version=%EDT_VERSION%
+set edt_escaped=%edt_version: =_%
+
 .\build-edt.bat
 
 docker build ^
