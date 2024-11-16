@@ -19,17 +19,19 @@ if [ "${NO_CACHE}" = 'true' ] ; then
     last_arg='--no-cache .'
 fi
 
-edt_version=$EDT_VERSION
-edt_escaped="${edt_version// /_}"
-
 ./build-edt.sh
 
-docker build \
-    --build-arg DOCKER_REGISTRY_URL=$DOCKER_REGISTRY_URL \
-    --build-arg BASE_IMAGE=edt \
-    --build-arg BASE_TAG=$edt_escaped \
-    -t $DOCKER_REGISTRY_URL/edt-agent:$edt_escaped \
-	-f k8s-jenkins-agent/Dockerfile \
-    $last_arg
+export PUSH_AGENT='false'
+./build-base-k8s-jenkins-agent.sh
 
-docker push $DOCKER_REGISTRY_URL/edt-agent:$edt_escaped
+docker build \
+   --build-arg DOCKER_REGISTRY_URL=$DOCKER_REGISTRY_URL \
+   --build-arg BASE_IMAGE=base-jenkins-agent \
+   --build-arg BASE_TAG=$ONEC_VERSION \
+   --build-arg EDT_VERSION=$EDT_VERSION \
+   --build-arg COVERAGE41C_VERSION=$COVERAGE41C_VERSION \
+   -t $DOCKER_REGISTRY_URL/base-jenkins-coverage-agent:$ONEC_VERSION \
+   -f coverage41C/Dockerfile \
+   $last_arg
+
+docker push $DOCKER_REGISTRY_URL/base-jenkins-coverage-agent:$ONEC_VERSION

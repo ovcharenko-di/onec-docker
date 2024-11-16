@@ -10,7 +10,6 @@ if %ERRORLEVEL% neq 0 goto end
 
 if %NO_CACHE%=="true" (SET last_arg="--no-cache .") else (SET last_arg=".")
 
-
 docker build ^
 	--pull ^
 	--build-arg DOCKER_REGISTRY_URL=library ^
@@ -95,7 +94,9 @@ docker build ^
 
 if %ERRORLEVEL% neq 0 goto end
 
-docker push %DOCKER_REGISTRY_URL%/base-jenkins-agent:%ONEC_VERSION%
+IF NOT "%PUSH_AGENT%"=="false" (
+  docker push %DOCKER_REGISTRY_URL%/base-jenkins-agent:%ONEC_VERSION%
+)
 
 if %ERRORLEVEL% neq 0 goto end
 
