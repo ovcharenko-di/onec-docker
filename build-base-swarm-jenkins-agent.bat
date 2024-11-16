@@ -94,7 +94,7 @@ docker build ^
 
 if %ERRORLEVEL% neq 0 goto end
 
-IF "%~1"=="" (
+IF NOT "%PUSH_AGENT%"=="false" (
   docker push %DOCKER_REGISTRY_URL%/base-jenkins-agent:%ONEC_VERSION%
 )
 

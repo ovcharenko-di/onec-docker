@@ -20,7 +20,9 @@ if [ "${NO_CACHE}" = 'true' ] ; then
 fi
 
 ./build-edt.sh
-./build-base-swarm-jenkins-agent.sh "do_not_push_agent"
+
+export PUSH_AGENT='false'
+./build-base-swarm-jenkins-agent.sh
 
 docker build \
    --build-arg DOCKER_REGISTRY_URL=$DOCKER_REGISTRY_URL \

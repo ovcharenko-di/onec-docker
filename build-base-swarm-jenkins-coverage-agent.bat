@@ -11,7 +11,9 @@ if %ERRORLEVEL% neq 0 goto end
 if %NO_CACHE%=="true" (SET last_arg="--no-cache .") else (SET last_arg=".")
 
 .\build-edt-swarm-agent.bat
-.\build-base-swarm-jenkins-agent.bat "do_not_push_agent"
+
+set PUSH_AGENT='false'
+.\build-base-swarm-jenkins-agent.bat
 
 docker build ^
     --build-arg DOCKER_REGISTRY_URL=%DOCKER_REGISTRY_URL% ^

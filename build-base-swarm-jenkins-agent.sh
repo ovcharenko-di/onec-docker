@@ -87,6 +87,6 @@ docker build \
     -f swarm-jenkins-agent/Dockerfile \
     $last_arg
 
-if [ -z "$1" ] ; then
+if [[ $PUSH_AGENT != "false" ]] ; then
   docker push $DOCKER_REGISTRY_URL/base-jenkins-agent:$ONEC_VERSION
 fi
