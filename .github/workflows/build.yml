@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        script: [ 'build-base-k8s-jenkins-agent.sh', 'build-base-swarm-jenkins-agent.sh', 'build-edt-swarm-agent.sh', 'build-oscript-k8s-agent.sh', 'build-oscript-swarm-agent.sh', 'build-server.sh' ]
+        script: [ 'build-base-k8s-jenkins-agent.sh', 'build-base-k8s-jenkins-coverage-agent.sh', 'build-base-swarm-jenkins-agent.sh', 'build-base-swarm-jenkins-coverage-agent.sh', 'build-edt-swarm-agent.sh', 'build-edt-k8s-agent.sh', 'build-oscript-k8s-agent.sh', 'build-oscript-swarm-agent.sh', 'build-server.sh' ]
 
     steps:
     - name: Checkout repository
