@@ -61,6 +61,7 @@ jobs:
         ONEC_PASSWORD: ${{ secrets.ONEC_PASSWORD}}
         ONEC_VERSION: '8.3.24.1624'
         EDT_VERSION: '2023.3.6'
+        DOCKER_SYSTEM_PRUNE: 'true'
       run: |
         docker run -d -p 5000:5000 --name registry registry:2
         ./${{ matrix.script }}
