@@ -4,7 +4,7 @@ docker login -u %DOCKER_LOGIN% -p %DOCKER_PASSWORD% %DOCKER_REGISTRY_URL%
 
 if %ERRORLEVEL% neq 0 goto end
 
-if %DOCKER_SYSTEM_PRUNE%=="true" docker system prune -af
+if "%DOCKER_SYSTEM_PRUNE%"=="true" docker system prune -af
 
 if %ERRORLEVEL% neq 0 goto end
 
