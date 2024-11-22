@@ -60,7 +60,10 @@ RUN apt-get update \
 ARG EDT_VERSION=2021.3
 ARG downloads=downloads/DevelopmentTools10/${EDT_VERSION}
 
+# Установка переменных окружения для корректной работы локали
 ENV LANG ru_RU.UTF-8
+ENV LANGUAGE ru_RU:ru
+ENV LC_ALL ru_RU.UTF-8
 
 # Install EDT
 COPY --from=downloader /tmp/${downloads} /tmp/${downloads}

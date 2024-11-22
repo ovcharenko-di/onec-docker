@@ -23,8 +23,8 @@ docker build \
 	--pull \
     $no_cache_arg \
 	--build-arg DOCKER_REGISTRY_URL=library \
-    --build-arg BASE_IMAGE=adoptopenjdk \
-    --build-arg BASE_TAG=14-hotspot \
+    --build-arg BASE_IMAGE=eclipse-temurin \
+    --build-arg BASE_TAG=17 \
     -t $DOCKER_REGISTRY_URL/oscript-jdk:latest \
 	-f oscript/Dockerfile \
     $last_arg

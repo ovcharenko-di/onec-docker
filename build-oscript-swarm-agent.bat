@@ -12,10 +12,10 @@ if %NO_CACHE%=="true" (SET last_arg="--no-cache .") else (SET last_arg=".")
 
 docker build ^
 	--pull ^
-	--build-arg DOCKER_REGISTRY_URL=%DOCKER_REGISTRY_URL% ^
-    --build-arg BASE_IMAGE=onec-client-vnc ^
-    --build-arg BASE_TAG=%ONEC_VERSION% ^
-    -t %DOCKER_REGISTRY_URL%/onec-client-vnc-oscript:%ONEC_VERSION% ^
+	--build-arg DOCKER_REGISTRY_URL=library ^
+    --build-arg BASE_IMAGE=eclipse-temurin ^
+    --build-arg BASE_TAG=17 ^
+    -t %DOCKER_REGISTRY_URL%/oscript-jdk:latest ^
     -f oscript/Dockerfile ^
     %last_arg%
 
