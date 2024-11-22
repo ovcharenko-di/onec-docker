@@ -1,70 +1,80 @@
+# Для сборки использован стандартный шаблон jenkins-inbound-agent https://github.com/jenkinsci/docker-agent/blob/master/debian/Dockerfile
+# Стадию с as jre-build убрал, т.к. у нас на этот момент уже всегда есть джава в контейнере.
 ARG DOCKER_REGISTRY_URL
 ARG BASE_IMAGE
 ARG BASE_TAG
-ARG user=jenkins
 
-FROM ${DOCKER_REGISTRY_URL}/${BASE_IMAGE}:${BASE_TAG}
+FROM ${DOCKER_REGISTRY_URL}/${BASE_IMAGE}:${BASE_TAG} as agent
 
 LABEL maintainer="Nikita Gryzlov <NikGryzlov@1bit.com>, FirstBit"
 
-RUN set -xe \
-  && apt-get update \
-  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-      curl \
-      git \
-      locales \
-      openssh-client \
-      wget \
-      init \
-      openssh-server openssh-client \
-      apt-transport-https \
-  # git-lfs
-  && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash \
-  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+ARG user=jenkins
+ARG group=jenkins
+ARG uid=1000
+ARG gid=1000
+
+RUN groupadd -g "${gid}" "${group}" \
+  && useradd -l -c "Jenkins user" -d /home/"${user}" -u "${uid}" -g "${gid}" -m "${user}" || echo "user ${user} already exists."
+
+ARG AGENT_WORKDIR=/home/"${user}"/agent
+
+## Always use the latest Debian packages: no need for versions
+# hadolint ignore=DL3008
+RUN apt-get update \
+  && apt-get --yes --no-install-recommends install \
+    ca-certificates \
+    curl \
+    fontconfig \
+    git \
     git-lfs \
-  && rm -rf  \
-    /var/lib/apt/lists/* \
-    /var/cache/debconf \
-  && localedef -i ru_RU -c -f UTF-8 -A /usr/share/locale/locale.alias ru_RU.UTF-8
+    less \
+    netbase \
+    openssh-client \
+    patch \
+    tzdata \
+  && apt-get clean \
+  && rm -rf /tmp/* /var/cache/* /var/lib/apt/lists/*
 
-RUN echo "deb http://security.ubuntu.com/ubuntu bionic-security main" | tee -a /etc/apt/sources.list
-RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 3B4FE6ACC0B21F32 && apt-get update 
-#RUN apt-add-repository 'deb http://security.debian.org/debian-security stretch/updates main' && apt-get update
-#RUN apt-get update && apt install -y openjdk-11-jdk
+ARG VERSION=3283.v92c105e0f819
+ADD --chown="${user}":"${group}" "https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/${VERSION}/remoting-${VERSION}.jar" /usr/share/jenkins/agent.jar
+RUN chmod 0644 /usr/share/jenkins/agent.jar \
+  && ln -sf /usr/share/jenkins/agent.jar /usr/share/jenkins/slave.jar
 
+USER "${user}"
+ENV AGENT_WORKDIR=${AGENT_WORKDIR}
+RUN mkdir -p /home/"${user}"/.jenkins && mkdir -p "${AGENT_WORKDIR}"
 
-RUN groupadd -g 1000 jenkins \
-  && useradd -l -d /home/jenkins -u 1000 -g 1000 -m jenkins
+VOLUME /home/"${user}"/.jenkins
+VOLUME "${AGENT_WORKDIR}"
+WORKDIR /home/"${user}"
+ENV USER=${user}
+LABEL \
+  org.opencontainers.image.vendor="Jenkins project" \
+  org.opencontainers.image.title="Official Jenkins Agent Base Docker image" \
+  org.opencontainers.image.description="This is a base image, which provides the Jenkins agent executable (agent.jar)" \
+  org.opencontainers.image.version="${VERSION}" \
+  org.opencontainers.image.url="https://www.jenkins.io/" \
+  org.opencontainers.image.source="https://github.com/jenkinsci/docker-agent" \
+  org.opencontainers.image.licenses="MIT"
 
+## Inbound Agent image target
+FROM agent AS inbound-agent
 
-ARG AGENT_WORKDIR=/home/jenkins/agent
+ARG user=jenkins
 
-# Install jenkins jnlp
-ARG VERSION=4.14
-RUN curl --create-dirs -sSLo /usr/share/jenkins/slave.jar https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/4.14/remoting-4.14.jar \
-    && chmod 755 /usr/share/jenkins \
-    && chmod 644 /usr/share/jenkins/slave.jar \
-    && chown jenkins:jenkins /usr/share/jenkins/slave.jar
-
+USER root
 COPY ./k8s-jenkins-agent/jenkins-agent /usr/local/bin/jenkins-agent
-RUN chmod +x /usr/local/bin/jenkins-agent \
-    && chown jenkins:jenkins /usr/local/bin/jenkins-agent \
-    && ln -s /usr/local/bin/jenkins-agent /usr/local/bin/jenkins-slave
+RUN chmod +x /usr/local/bin/jenkins-agent &&\
+    ln -s /usr/local/bin/jenkins-agent /usr/local/bin/jenkins-slave
+# USER ${user}
 
-RUN mkdir -p /home/jenkins/.jenkins \
-    && mkdir -p /home/jenkins/agent \
-    && chown -R jenkins:jenkins /home/jenkins
+LABEL \
+  org.opencontainers.image.vendor="Jenkins project" \
+  org.opencontainers.image.title="Official Jenkins Inbound Agent Base Docker image" \
+  org.opencontainers.image.description="This is an image for Jenkins agents using TCP or WebSockets to establish inbound connection to the Jenkins controller" \
+  org.opencontainers.image.version="${VERSION}" \
+  org.opencontainers.image.url="https://www.jenkins.io/" \
+  org.opencontainers.image.source="https://github.com/jenkinsci/docker-agent" \
+  org.opencontainers.image.licenses="MIT"
 
-
-ENV LANG ru_RU.UTF-8
-
-VOLUME /home/jenkins/.jenkins
-VOLUME /home/jenkins/agent
-
-WORKDIR /home/jenkins/agent
-
-COPY ./k8s-jenkins-agent/docker-entrypoint.sh /
-RUN chmod 755 /docker-entrypoint.sh \
-    && chmod +x /docker-entrypoint.sh
-
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
