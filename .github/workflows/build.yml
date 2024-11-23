@@ -63,6 +63,7 @@ jobs:
         EDT_VERSION: '2023.3.6'
         DOCKER_SYSTEM_PRUNE: 'false'
       run: |
+        docker system prune -af
         docker run -d -p 5000:5000 --name registry registry:2
         ./${{ matrix.script }}
         
