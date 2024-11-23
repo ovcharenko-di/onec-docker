@@ -40,7 +40,6 @@ ADD --chown="${user}":"${group}" "https://repo.jenkins-ci.org/public/org/jenkins
 RUN chmod 0644 /usr/share/jenkins/agent.jar \
   && ln -sf /usr/share/jenkins/agent.jar /usr/share/jenkins/slave.jar
 
-USER "${user}"
 ENV AGENT_WORKDIR=${AGENT_WORKDIR}
 RUN mkdir -p /home/"${user}"/.jenkins && mkdir -p "${AGENT_WORKDIR}"
 
