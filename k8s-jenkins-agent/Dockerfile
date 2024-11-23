@@ -63,8 +63,12 @@ ARG user=jenkins
 
 USER root
 COPY ./k8s-jenkins-agent/jenkins-agent /usr/local/bin/jenkins-agent
-RUN chmod +x /usr/local/bin/jenkins-agent &&\
-    ln -s /usr/local/bin/jenkins-agent /usr/local/bin/jenkins-slave
+COPY ./k8s-jenkins-agent/docker-entrypoint.sh /docker-entrypoint.sh
+
+RUN chmod +x /usr/local/bin/jenkins-agent \
+    && ln -s /usr/local/bin/jenkins-agent /usr/local/bin/jenkins-slave \
+    && chmod 755 /docker-entrypoint.sh \
+    && chmod +x /docker-entrypoint.sh
 # USER ${user}
 
 LABEL \
@@ -76,4 +80,4 @@ LABEL \
   org.opencontainers.image.source="https://github.com/jenkinsci/docker-agent" \
   org.opencontainers.image.licenses="MIT"
 
-ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
