@@ -61,6 +61,7 @@ jobs:
         ONEC_PASSWORD: ${{ secrets.ONEC_PASSWORD}}
         ONEC_VERSION: '8.3.24.1624'
         EDT_VERSION: '2023.3.6'
+        COVERAGE41C_VERSION: '2.7.2'
         DOCKER_SYSTEM_PRUNE: 'false'
       run: |
         docker system prune -af
