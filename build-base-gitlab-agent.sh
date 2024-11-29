@@ -76,7 +76,7 @@ docker build \
     --build-arg DOCKER_REGISTRY_URL=$DOCKER_REGISTRY_URL \
     --build-arg BASE_IMAGE=onec-client-vnc-oscript-jdk-testutils \
     --build-arg BASE_TAG=$ONEC_VERSION \
-    -t $DOCKER_REGISTRY_URL/base-gitlab-agent:$ONEC_VERSION \
+    -t base-gitlab-agent:$ONEC_VERSION \
     -f gitlab-agent/Dockerfile \
     $last_arg
 
