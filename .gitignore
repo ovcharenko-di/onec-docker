@@ -2,6 +2,7 @@
 
 .env
 .onec.env
+env.bat
 build_info.txt
 .DS_Store
 dive.log
