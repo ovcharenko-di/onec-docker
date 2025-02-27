@@ -4,6 +4,13 @@
 
 В данном репозитории находятся файлы для сборки образов [Docker](https://www.docker.com) с платформой [1С:Предприятие](http://v8.1c.ru) 8.3.
 
+# Описание изменений ветки `feature/uri` относительно ветки `feature/first-bit` в репозитории [upstream](https://github.com/firstBitMarksistskaya/onec-docker/tree/feature/first-bit)
+
+- Добавлен скрипт для сборки агента GitLab `build-base-gitlab-agent.sh`, а также отдельные Dockerfile и entrypoint.sh
+- ./oscript/Dockerfile
+  - Изменен состав устанавливаемых пакетов, см. ./oscript/Dockerfile
+  - Доустановлен пакет, необходимый для корректной работы Mono
+
 # Оглавление
 
 - [Описание](#описание)
