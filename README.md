@@ -7,10 +7,9 @@
 ## Описание изменений ветки `feature/uri` относительно ветки `feature/first-bit` в репозитории [upstream](https://github.com/firstBitMarksistskaya/onec-docker/tree/feature/first-bit)
 
 - Добавлен скрипт для сборки агента GitLab `build-base-gitlab-agent.sh`, а также отдельные Dockerfile и entrypoint.sh
-- ./oscript/Dockerfile
-  - Изменен состав устанавливаемых пакетов, см. ./oscript/Dockerfile
-  - Доустановлен пакет, необходимый для корректной работы Mono
-  - Используется локальный opm-пакет gitsync-plugins, в котором устранена проблема с плагином use-ibcmd. После выпуска новой публичной версии gitsync-plugins (выше, чем v1.5.0) эти изменения можно откатить.
+- в файле ./oscript/Dockerfile
+  - изменен состав устанавливаемых пакетов oscript, см. ./oscript/Dockerfile
+  - доустановлен пакет ОС, необходимый для корректной работы Mono
 
 ## Оглавление
 

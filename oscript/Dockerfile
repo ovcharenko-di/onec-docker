@@ -47,8 +47,8 @@ RUN chmod +x /remove-dst-root-ca-x3.sh \
 
 # Installing oscript
 ARG OVM_REPOSITORY_OWNER=oscript-library
-ARG OVM_VERSION=v1.6.1
-ARG ONESCRIPT_VERSION=1.9.2
+ARG OVM_VERSION=v1.6.2
+ARG ONESCRIPT_VERSION=stable
 ARG ONESCRIPT_PACKAGES="add@SNAPSHOT gitsync vanessa-runner irac stebi edt-ripper"
 
 RUN wget https://github.com/${OVM_REPOSITORY_OWNER}/ovm/releases/download/${OVM_VERSION}/ovm.exe \
@@ -60,16 +60,12 @@ RUN wget https://github.com/${OVM_REPOSITORY_OWNER}/ovm/releases/download/${OVM_
 ENV OSCRIPTBIN=/root/.local/share/ovm/current/bin
 ENV PATH="$OSCRIPTBIN:$PATH"
 
-# Используется сборка пакета с плагинами,
-# в которой устранена проблема с use-ibcmd
-COPY ./distr/gitsync-plugins-1.6.0-uri.ospx /tmp/
-
 # Update and prepare oscript packages
 RUN opm install opm \
   && opm update --all \
   && opm install ${ONESCRIPT_PACKAGES} \
   && if echo "$ONESCRIPT_PACKAGES" | grep -q "gitsync"; then \
-       gitsync plugins install -f /tmp/gitsync-plugins-1.6.0-uri.ospx \
+       gitsync plugins init \
        && gitsync plugins enable limit \
        && gitsync plugins disable limit; \
      fi
