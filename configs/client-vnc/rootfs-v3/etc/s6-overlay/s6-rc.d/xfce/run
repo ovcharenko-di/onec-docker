@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv sh
+#!/command/with-contenv sh
 
 # copy default panel config to current user profile
 mkdir -p /root/.config/xfce4/xfconf/xfce-perchannel-xml
