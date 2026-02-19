@@ -86,7 +86,7 @@ RUN groupadd -r usr1cv8 --gid=2001 \
   && mkdir -p /home/usr1cv8/.1C/1cestart \
   && chown -R usr1cv8:usr1cv8 /home/usr1cv8
 
-COPY ./configs/client-vnc/rootfs/ /
+COPY ./configs/client-vnc/rootfs-v3/ /
 
 ENV DISPLAY=:0
 ENV DISPLAY_WIDTH=1440
