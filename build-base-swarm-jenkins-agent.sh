@@ -20,9 +20,9 @@ if [ "${NO_CACHE}" = 'true' ] ; then
 fi
 
 docker build \
-	--pull \
+    --pull \
     $no_cache_arg \
-	--build-arg DOCKER_REGISTRY_URL=library \
+    --build-arg DOCKER_REGISTRY_URL=library \
     --build-arg BASE_IMAGE=ubuntu \
     --build-arg BASE_TAG=20.04 \
     --build-arg ONESCRIPT_PACKAGES="yard" \
@@ -49,14 +49,11 @@ fi
 
 docker build \
     --pull \
-    --build-arg ONEC_USERNAME=$ONEC_USERNAME \
-    --build-arg ONEC_PASSWORD=$ONEC_PASSWORD \
     --build-arg ONEC_VERSION=$ONEC_VERSION \
     --build-arg DOCKER_REGISTRY_URL=$DOCKER_REGISTRY_URL \
     -t ${DOCKER_REGISTRY_URL:+"$DOCKER_REGISTRY_URL/"}onec-client-vnc:$ONEC_VERSION \
     -f client-vnc/Dockerfile \
     $last_arg
-
 
 if [[ -n "$DOCKER_REGISTRY_URL" ]]; then
   docker push $DOCKER_REGISTRY_URL/onec-client-vnc:$ONEC_VERSION

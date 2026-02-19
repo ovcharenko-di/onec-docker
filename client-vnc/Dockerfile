@@ -49,7 +49,7 @@ RUN apt-get update \
       x11vnc \
       iproute2 \
       libglu1-mesa \
-      xz-utils
+      xz-utils \
   # Install libpng12-0 from debian-snapshot
   && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 7638D0442B90D010 8B48AD6246925553 \
   && echo "deb http://snapshot.debian.org/archive/debian/20160413T160058Z/ unstable main" > /etc/apt/sources.list.d/debian-snapshot.list \
