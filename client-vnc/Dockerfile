@@ -78,7 +78,9 @@ RUN chmod +x /remove-dst-root-ca-x3.sh \
 
 # Install s6-overlay v3
 RUN wget -P /tmp \
-  https://github.com/just-containers/s6-overlay/releases/download/v3.1.6.2/{s6-overlay-{noarch,x86_64},s6-overlay-symlinks-noarch}.tar.xz \
+  https://github.com/just-containers/s6-overlay/releases/download/v3.1.6.2/s6-overlay-noarch.tar.xz \
+  https://github.com/just-containers/s6-overlay/releases/download/v3.1.6.2/s6-overlay-x86_64.tar.xz \
+  https://github.com/just-containers/s6-overlay/releases/download/v3.1.6.2/s6-overlay-symlinks-noarch.tar.xz \
   && tar -C / -Jxpf /tmp/s6-overlay-*.tar.xz \
   && rm -f /tmp/s6-overlay-*.tar.xz
 
