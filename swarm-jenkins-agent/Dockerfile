@@ -25,4 +25,7 @@ RUN set -xe \
 
 ENV LANG ru_RU.UTF-8
 
+# add jenkins agent to s6-overlay
+COPY ./configs/swarm-jenkis-agent/rootfs-v3/ /
+
 ENTRYPOINT ["/init"]
