@@ -1,3 +1,5 @@
+#!/command/with-contenv sh
+
 # https://github.com/just-containers/s6-overlay/issues/165
 export HOME=/home/usr1cv8
 

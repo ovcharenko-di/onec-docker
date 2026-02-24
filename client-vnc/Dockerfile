@@ -3,7 +3,11 @@ ARG ONEC_VERSION
 FROM ${DOCKER_REGISTRY_URL:+"$DOCKER_REGISTRY_URL/"}onec-client:${ONEC_VERSION} AS base
 
 FROM debian:bookworm-slim
+
 ARG ONEC_VERSION
+
+ARG ONEC_UID=1000
+ARG ONEC_GID=1000
 
 COPY --from=base /opt /opt
 
@@ -75,6 +79,12 @@ COPY ./scripts/remove-dst-root-ca-x3.sh /remove-dst-root-ca-x3.sh
 RUN chmod +x /remove-dst-root-ca-x3.sh \
   && /remove-dst-root-ca-x3.sh \
   && rm /remove-dst-root-ca-x3.sh
+
+# Create user for 1C
+RUN groupadd -r grp1cv8 --gid=$ONEC_GID \
+  && useradd -r -g grp1cv8 --uid=$ONEC_UID --home-dir=/home/usr1cv8 --shell=/sbin/nologin usr1cv8 \
+  && mkdir -p /home/usr1cv8/.1cv8 \
+  && chown -R usr1cv8:grp1cv8 /home/usr1cv8
 
 # Install s6-overlay v3
 ARG S6_OVERLAY_VERSION=3.2.2.0

@@ -1,2 +1,2 @@
 *.sh eol=lf
-configs/**/rootfs*/etc/** eof=lf
+configs/**/rootfs*/etc/** eol=lf

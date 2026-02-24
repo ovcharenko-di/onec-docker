@@ -83,8 +83,8 @@ FROM debian:bookworm-slim
 LABEL maintainer="ivanov egor"
 
 # Создание пользователя и установка локали
-ARG onec_uid="999"
-ARG onec_gid="999"
+ARG ONEC_UID=1000
+ARG ONEC_GID=1000
 COPY --from=installer /opt/1cv8 /opt/1cv8
 COPY --from=installer /bin/gosu /bin/gosu
 RUN set -xe \
@@ -99,11 +99,11 @@ RUN set -xe \
   && localedef -i ru_RU -c -f UTF-8 -A /usr/share/locale/locale.alias ru_RU.UTF-8
 ENV LANG ru_RU.UTF-8
 
-# Настройка группы и пользователя
-RUN groupadd -r grp1cv8 --gid=$onec_gid \
-  && useradd -r -g grp1cv8 --uid=$onec_uid --home-dir=/home/usr1cv8 --shell=/bin/bash usr1cv8 \
-  && mkdir -p /var/log/1C /home/usr1cv8/.1cv8/1C/1cv8/conf /opt/1cv8/current/conf \
-  && chown -R usr1cv8:grp1cv8 /var/log/1C /home/usr1cv8
+# Create user for 1C
+RUN groupadd -r grp1cv8 --gid=$ONEC_GID \
+  && useradd -r -g grp1cv8 --uid=$ONEC_UID --home-dir=/home/usr1cv8 --shell=/sbin/nologin usr1cv8 \
+  && mkdir -p /home/usr1cv8/.1cv8 \
+  && chown -R usr1cv8:grp1cv8 /home/usr1cv8
 
 VOLUME /home/usr1cv8/.1cv8 /var/log/1C
 

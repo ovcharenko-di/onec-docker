@@ -54,8 +54,8 @@ RUN chmod +x /bin/gosu
 FROM i386/debian:bookworm-slim
 LABEL maintainer="Anton Kvashenkin <anton.jugatsu@gmail.com> (@jugatsu)"
 
-ARG onec_uid="999"
-ARG onec_gid="999"
+ARG ONEC_UID=1000
+ARG ONEC_GID=1000
 
 COPY --from=base /opt /opt
 COPY --from=base /bin/gosu /bin/gosu
@@ -70,8 +70,9 @@ RUN set -xe \
   && localedef -i ru_RU -c -f UTF-8 -A /usr/share/locale/locale.alias ru_RU.UTF-8
 ENV LANG ru_RU.UTF-8
 
-RUN groupadd -r grp1cv8 --gid=$onec_gid \
-  && useradd -r -g grp1cv8 --uid=$onec_uid --home-dir=/home/usr1cv8 --shell=/bin/bash usr1cv8 \
+# Create user for 1C
+RUN groupadd -r grp1cv8 --gid=$ONEC_GID \
+  && useradd -r -g grp1cv8 --uid=$ONEC_UID --home-dir=/home/usr1cv8 --shell=/sbin/nologin usr1cv8 \
   && mkdir -p /home/usr1cv8/.1cv8 \
   && chown -R usr1cv8:grp1cv8 /home/usr1cv8
 
