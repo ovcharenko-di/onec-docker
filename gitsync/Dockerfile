@@ -1,6 +1,6 @@
 ARG DOCKER_REGISTRY_URL
 ARG ONEC_VERSION
-FROM ${DOCKER_REGISTRY_URL:+"$DOCKER_REGISTRY_URL/"}onec-client:${ONEC_VERSION} AS base
+FROM ${DOCKER_REGISTRY_URL}${DOCKER_REGISTRY_URL:+/}onec-client:${ONEC_VERSION} AS base
 
 FROM mono:5.20-slim
 LABEL maintainer="Anton Kvashenkin <anton.jugatsu@gmail.com> (@jugatsu)"

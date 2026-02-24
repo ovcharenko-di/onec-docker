@@ -1,6 +1,6 @@
 ARG DOCKER_REGISTRY_URL
 ARG ONEC_VERSION
-FROM ${DOCKER_REGISTRY_URL:+"$DOCKER_REGISTRY_URL/"}onec:${ONEC_VERSION}-server
+FROM ${DOCKER_REGISTRY_URL}${DOCKER_REGISTRY_URL:+/}onec:${ONEC_VERSION}-server
 LABEL maintainer="Anton Kvashenkin <anton.jugatsu@gmail.com> (@jugatsu)"
 
 ARG gui_ver=1.0.1
