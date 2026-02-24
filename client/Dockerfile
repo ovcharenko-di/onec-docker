@@ -95,6 +95,7 @@ RUN set -xe \
   && rm -rf  \
     /var/lib/apt/lists/* \
     /var/cache/debconf \
+    /opt/1cv8/x86_64/8.3.21.1901/libstdc++.so.6
   && localedef -i ru_RU -c -f UTF-8 -A /usr/share/locale/locale.alias ru_RU.UTF-8
 ENV LANG ru_RU.UTF-8
 
