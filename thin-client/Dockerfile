@@ -38,7 +38,6 @@ FROM ubuntu:18.04 AS base
 
 # Копируем скрипты и файлы установки
 ARG ONEC_VERSION
-ARG gosu_ver=1.11
 ARG nls_enabled=false
 ENV nls=$nls_enabled
 ENV distrPath=/tmp/downloads/Platform83/${ONEC_VERSION}
