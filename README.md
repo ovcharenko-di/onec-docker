@@ -6,10 +6,8 @@
 
 ## Описание изменений ветки `feature/uri` относительно ветки `feature/first-bit` в репозитории [upstream](https://github.com/firstBitMarksistskaya/onec-docker/tree/feature/first-bit)
 
-- Добавлен скрипт для сборки агента GitLab `build-base-gitlab-agent.sh`, а также отдельные Dockerfile и entrypoint.sh
-- в файле ./oscript/Dockerfile
-  - изменен состав устанавливаемых пакетов oscript, см. ./oscript/Dockerfile
-  - доустановлен пакет ОС, необходимый для корректной работы Mono
+- Добавлен скрипт для сборки агента GitLab `build-base-gitlab-agent.sh` и отдельный Dockerfile
+- В файле `./oscript/Dockerfile` добавлена установка пакета, необходимого для корректной работы irac в Mono
 
 ## Оглавление
 
