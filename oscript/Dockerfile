@@ -23,13 +23,12 @@ RUN apt-get update \
     ca-certificates-mono \
     libmono-i18n4.0-all \
     libmono-system-runtime-serialization4.0-cil \
-  && rm -rf /etc/apt/sources.list.d/mono-official-stable.list \
-  && apt-get update \
   && cert-sync --user /etc/ssl/certs/ca-certificates.crt \
   && rm -rf  \
     /var/lib/apt/lists/* \
     /var/cache/debconf \
-    /tmp/*
+    /tmp/* \
+    /etc/apt/sources.list.d/mono-official-stable.list
 
 # remove DST Root CA X3 cert if it exists
 COPY ./scripts/remove-dst-root-ca-x3.sh /remove-dst-root-ca-x3.sh
