@@ -92,12 +92,16 @@ RUN set -xe \
       libmagickwand-6.q16-3 \
       dbus-x11 \
       libglu1-mesa \
-  && rm -rf  \
+  && rm -rf \
     /var/lib/apt/lists/* \
     /var/cache/debconf \
-    /opt/1cv8/current/libstdc++.so.6 \ # удаяем встроенную библиотеку, чтобы использовалась системная
+    # удаяем встроенную библиотеку, чтобы использовалась системная
+    /opt/1cv8/current/libstdc++.so.6 \
   && localedef -i ru_RU -c -f UTF-8 -A /usr/share/locale/locale.alias ru_RU.UTF-8
+
 ENV LANG ru_RU.UTF-8
+ENV LANGUAGE ru_RU:ru
+ENV LC_ALL ru_RU.UTF-8
 
 # Create user for 1C
 RUN groupadd -r grp1cv8 --gid=$ONEC_GID \
@@ -106,7 +110,5 @@ RUN groupadd -r grp1cv8 --gid=$ONEC_GID \
   && chown -R usr1cv8:grp1cv8 /home/usr1cv8
 
 VOLUME /home/usr1cv8/.1cv8/
-
-USER usr1cv8
 
 CMD ["/opt/1C/v8.3/x86_64/1cv8"]

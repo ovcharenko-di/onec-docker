@@ -21,7 +21,7 @@ RUN apt-get update \
     xdg-utils \
   # Исправление темы xfce на совместимую
   && sed -i 's%<property name="ThemeName" type="string" value="Xfce"/>%<property name="ThemeName" type="string" value="Raleigh"/>%' /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml \
-  && rm -rf  \
+  && rm -rf \
    /var/lib/apt/lists/* \
    /var/cache/debconf
 
