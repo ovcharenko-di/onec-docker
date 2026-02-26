@@ -52,7 +52,7 @@ RUN set -xe \
 
 COPY ./scripts/install_new.sh /install.sh
 COPY --from=downloader /tmp/ /tmp/
-WORKDIR ${distrPath}      
+WORKDIR ${distrPath}
 
 SHELL ["/bin/bash", "-c"]
 RUN ls . \
@@ -65,7 +65,7 @@ RUN chmod +x /create-symlink-to-current-1cv8.sh \
   && /create-symlink-to-current-1cv8.sh \
   && rm /create-symlink-to-current-1cv8.sh
 
-COPY ./configs/client/current/ /opt/1cv8/current/
+COPY ./client/configs/current/ /opt/1cv8/current/
 
 FROM ubuntu:18.04
 LABEL maintainer="Anton Kvashenkin <anton.jugatsu@gmail.com> (@jugatsu)"
@@ -95,13 +95,13 @@ RUN set -xe \
   && rm -rf  \
     /var/lib/apt/lists/* \
     /var/cache/debconf \
-    /opt/1cv8/x86_64/8.3.21.1901/libstdc++.so.6 \
+    /opt/1cv8/current/libstdc++.so.6 \ # удаяем встроенную библиотеку, чтобы использовалась системная
   && localedef -i ru_RU -c -f UTF-8 -A /usr/share/locale/locale.alias ru_RU.UTF-8
 ENV LANG ru_RU.UTF-8
 
 # Create user for 1C
 RUN groupadd -r grp1cv8 --gid=$ONEC_GID \
-  && useradd -r -g grp1cv8 --uid=$ONEC_UID --home-dir=/home/usr1cv8 --shell=/sbin/nologin usr1cv8 \
+  && useradd -r -g grp1cv8 --uid=$ONEC_UID --home-dir=/home/usr1cv8 --shell=/bin/bash usr1cv8 \
   && mkdir -p /home/usr1cv8/.1cv8 \
   && chown -R usr1cv8:grp1cv8 /home/usr1cv8
 
