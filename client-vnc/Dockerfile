@@ -5,7 +5,6 @@ FROM ${DOCKER_REGISTRY_URL}${DOCKER_REGISTRY_URL:+/}onec-client:${ONEC_VERSION}
 LABEL maintainer="Dima Ovcharenko <d.ovcharenko90@gmail.com>, Korus Consulting LLC"
 
 RUN apt-get update \
-  
   && apt-mark hold iptables \
   && env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     # X11 и VNC
@@ -19,6 +18,7 @@ RUN apt-get update \
     # Утилиты
     psmisc \
     xdg-utils \
+    xz-utils \
   # Исправление темы xfce на совместимую
   && sed -i 's%<property name="ThemeName" type="string" value="Xfce"/>%<property name="ThemeName" type="string" value="Raleigh"/>%' /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml \
   && rm -rf \
