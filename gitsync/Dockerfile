@@ -12,6 +12,7 @@ COPY --from=base /opt /opt
 RUN echo "deb http://http.debian.net/debian/ stretch main contrib non-free" > /etc/apt/sources.list.d/stretch.list \
   && echo "deb http://http.debian.net/debian/ stretch-updates main contrib non-free" >> > /etc/apt/sources.list.d/stretch-updates.list \
   && echo "deb http://security.debian.org/ stretch/updates main contrib non-free" >> > /etc/apt/sources.list.d/stretch-security-updates.list \
+  && echo "deb http://cz.archive.ubuntu.com/ubuntu bionic main universe" >> > /etc/apt/sources.list.d/bionic-cz-archive.list \
   && echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections \
   && apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
