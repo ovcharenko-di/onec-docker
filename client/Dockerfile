@@ -39,9 +39,9 @@ FROM ubuntu:18.04 AS base
 # Копируем скрипты и файлы установки
 ARG ONEC_VERSION
 
+# Аргумент и переменные окружения для install.sh
 ARG nls_enabled=false
 ENV nls=$nls_enabled
-ENV distrPath=/tmp/downloads/Platform83/${ONEC_VERSION}
 ENV installer_type=client
 
 RUN set -xe \
@@ -52,7 +52,7 @@ RUN set -xe \
 
 COPY ./scripts/install_new.sh /install.sh
 COPY --from=downloader /tmp/ /tmp/
-WORKDIR ${distrPath}
+WORKDIR /tmp/downloads/Platform83/${ONEC_VERSION}
 
 SHELL ["/bin/bash", "-c"]
 RUN ls . \
