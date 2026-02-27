@@ -9,6 +9,7 @@ ARG MONO_VERSION=6.12.0.122
 
 RUN apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+      locales \
       ca-certificates \
       gnupg \
       dirmngr \
@@ -24,11 +25,18 @@ RUN apt-get update \
     libmono-i18n4.0-all \
     libmono-system-runtime-serialization4.0-cil \
   && cert-sync --user /etc/ssl/certs/ca-certificates.crt \
+  && locale-gen ru_RU.UTF-8 \
+  && localedef -i ru_RU -c -f UTF-8 -A /usr/share/locale/locale.alias ru_RU.UTF-8 \
   && rm -rf  \
     /var/lib/apt/lists/* \
     /var/cache/debconf \
     /tmp/* \
     /etc/apt/sources.list.d/mono-official-stable.list
+
+# Установка переменных окружения для корректной работы локали
+ENV LANG=ru_RU.UTF-8
+ENV LANGUAGE=ru_RU:ru
+ENV LC_ALL=ru_RU.UTF-8
 
 # remove DST Root CA X3 cert if it exists
 COPY ./scripts/remove-dst-root-ca-x3.sh /remove-dst-root-ca-x3.sh
