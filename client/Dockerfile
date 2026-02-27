@@ -34,7 +34,7 @@ ENV LC_ALL ru_RU.UTF-8
 RUN /download.sh "$ONEC_USERNAME" "$ONEC_PASSWORD" "$ONEC_VERSION" "client"
 
 # Начало основной стадии сборки
-FROM ubuntu:18.04 AS base
+FROM ubuntu:20.04 AS base
 
 # Копируем скрипты и файлы установки
 ARG ONEC_VERSION
@@ -46,9 +46,25 @@ ENV installer_type=client
 
 RUN set -xe \
   && chmod 777 -R /tmp \
+  && echo "deb http://cz.archive.ubuntu.com/ubuntu bionic main universe" | tee -a /etc/apt/sources.list.d/bionic-cz-archive.list \
   && apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-      libwebkitgtk-3.0-0
+      libwebkitgtk-3.0-0 \
+      libgtk-3-0 \
+      libenchant1c2a \
+      libharfbuzz-icu0 \
+      libgstreamer1.0-0 \
+      libgstreamer-plugins-base1.0-0 \
+      gstreamer1.0-plugins-good \
+      gstreamer1.0-plugins-bad libsecret-1-0 \
+      libsoup2.4-1 \
+      libsqlite3-0 \
+      libgl1 \
+      libegl1 \
+      libxrender1 \
+      libxfixes3 \
+      libxslt1.1 \
+      geoclue-2.0
 
 COPY ./scripts/install_new.sh /install.sh
 COPY --from=downloader /tmp/ /tmp/
@@ -57,7 +73,7 @@ WORKDIR /tmp/downloads/Platform83/${ONEC_VERSION}
 SHELL ["/bin/bash", "-c"]
 RUN ls . \
   && chmod +x /install.sh \
-  && sync; /install.sh
+  && /install.sh
 
 # create symlink to current 1c:enterprise directory
 COPY ./scripts/create-symlink-to-current-1cv8.sh /create-symlink-to-current-1cv8.sh
@@ -67,7 +83,7 @@ RUN chmod +x /create-symlink-to-current-1cv8.sh \
 
 COPY ./client/configs/current/ /opt/1cv8/current/
 
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 LABEL maintainer="Anton Kvashenkin <anton.jugatsu@gmail.com> (@jugatsu)"
 
 ARG ONEC_UID=1000
@@ -77,6 +93,7 @@ COPY --from=base /opt /opt
 
 RUN set -xe \
   && chmod 777 -R /tmp \
+  && echo "deb http://cz.archive.ubuntu.com/ubuntu bionic main universe" | tee -a /etc/apt/sources.list.d/bionic-cz-archive.list \
   && apt-get update \
   && echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -95,7 +112,7 @@ RUN set -xe \
   && rm -rf \
     /var/lib/apt/lists/* \
     /var/cache/debconf \
-    # удаяем встроенную библиотеку, чтобы использовалась системная
+    # удаляем встроенную библиотеку, чтобы использовалась системная
     /opt/1cv8/current/libstdc++.so.6 \
   && localedef -i ru_RU -c -f UTF-8 -A /usr/share/locale/locale.alias ru_RU.UTF-8
 
