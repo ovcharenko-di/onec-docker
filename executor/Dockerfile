@@ -38,7 +38,7 @@ RUN --mount=type=secret,id=dev1c_executor_api_key \
   && cp -R * /opt/1C/executor \
 # cleanup
   && rm -rf /tmp/* \
-  && apt purge -y unzip
+  && apt-get purge -y unzip
 
 ENV PATH="/opt/1C/executor:$PATH"
 ENTRYPOINT ["/opt/1C/executor/executor"]

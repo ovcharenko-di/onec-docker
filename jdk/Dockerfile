@@ -24,8 +24,8 @@ RUN apt-get update \
   && echo "Acquire::https::packages.adoptium.net::Verify-Peer \"false\";" | tee /etc/apt/apt.conf.d/adoptium-no-check-cert \
   && wget --no-check-certificate -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | gpg --dearmor -o /etc/apt/keyrings/adoptium.gpg \
   && echo "deb [signed-by=/etc/apt/keyrings/adoptium.gpg] https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list \
-  && apt update \
-  && apt install -y temurin-${OPENJDK_VERSION}-jdk \
+  && apt-get update \
+  && apt-get install -y temurin-${OPENJDK_VERSION}-jdk \
   && rm -f /etc/apt/apt.conf.d/adoptium-no-check-cert \
   && localedef -i ru_RU -c -f UTF-8 -A /usr/share/locale/locale.alias ru_RU.UTF-8
 
