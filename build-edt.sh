@@ -36,7 +36,7 @@ docker build \
     $no_cache_arg \
         --build-arg DOCKER_REGISTRY_URL=library \
     --build-arg BASE_IMAGE=ubuntu \
-    --build-arg BASE_TAG=20.04 \
+    --build-arg BASE_TAG=24.04 \
     --build-arg ONESCRIPT_PACKAGES="yard" \
     -t ${DOCKER_REGISTRY_URL:+"$DOCKER_REGISTRY_URL/"}oscript-downloader:latest \
         -f oscript/Dockerfile \

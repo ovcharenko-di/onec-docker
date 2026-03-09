@@ -33,10 +33,8 @@ ENV LC_ALL ru_RU.UTF-8
 
 RUN /download.sh "$ONEC_USERNAME" "$ONEC_PASSWORD" "$ONEC_VERSION" "client"
 
-# Начало основной стадии сборки
-FROM ubuntu:20.04 AS base
+FROM ubuntu:24.04 AS base
 
-# Копируем скрипты и файлы установки
 ARG ONEC_VERSION
 
 # Аргумент и переменные окружения для install.sh
@@ -45,11 +43,8 @@ ENV nls=$nls_enabled
 ENV installer_type=client
 
 RUN set -xe \
-  && chmod 777 -R /tmp \
-  && echo "deb http://cz.archive.ubuntu.com/ubuntu bionic main universe" | tee -a /etc/apt/sources.list.d/bionic-cz-archive.list \
   && apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-      libwebkitgtk-3.0-0 \
       libgtk-3-0 \
       libenchant1c2a \
       libharfbuzz-icu0 \
@@ -83,38 +78,53 @@ RUN chmod +x /create-symlink-to-current-1cv8.sh \
 
 COPY ./client/configs/current/ /opt/1cv8/current/
 
-FROM ubuntu:20.04
+FROM ubuntu:24.04
 LABEL maintainer="Anton Kvashenkin <anton.jugatsu@gmail.com> (@jugatsu)"
 
-ARG ONEC_UID=1000
-ARG ONEC_GID=1000
+ARG ONEC_UID=1001
+ARG ONEC_GID=1001
 
 COPY --from=base /opt /opt
 
-RUN set -xe \
-  && chmod 777 -R /tmp \
-  && echo "deb http://cz.archive.ubuntu.com/ubuntu bionic main universe" | tee -a /etc/apt/sources.list.d/bionic-cz-archive.list \
+# gnupg and wget install
+RUN set -e \
   && apt-get update \
-  && echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections \
+  && apt-get install -y --no-install-recommends \
+    gnupg \
+    wget \
+    ca-certificates \
+  && mkdir -p -m 0755 /etc/apt/keyrings \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+# add bionic repo for libwebkitgtk-3.0-0
+RUN set -e \
+  && wget -qO- 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x3B4FE6ACC0B21F32' | \
+  gpg --dearmor -o /etc/apt/keyrings/ubuntu-archive-bionic.gpg \
+  && echo "deb [signed-by=/etc/apt/keyrings/ubuntu-archive-bionic.gpg arch=amd64] \
+    http://archive.ubuntu.com/ubuntu bionic main universe" | \
+    tee /etc/apt/sources.list.d/bionic-archive.list > /dev/null
+
+# Preconfigure and install packages + generate locale
+RUN set -e \
+  &&echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections \
+  && DEBIAN_FRONTEND=noninteractive apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-      locales \
-      ca-certificates \
-      libgtk2.0-0 \
-      libwebkitgtk-3.0-0 \
-      ttf-mscorefonts-installer \
-      libfontconfig1 \
-      libgsf-1-114 \
-      libglib2.0-0 \
-      libodbc1 \
-      libmagickwand-6.q16-3 \
-      dbus-x11 \
-      libglu1-mesa \
+    locales \
+    libgtk2.0-0 \
+    libwebkitgtk-3.0-0 \
+    ttf-mscorefonts-installer \
+    libfontconfig1 \
+    libgsf-1-114 \
+    dbus-x11 \
+    libglu1-mesa \
+  && localedef -i ru_RU -c -f UTF-8 -A /usr/share/locale/locale.alias ru_RU.UTF-8 \
   && rm -rf \
     /var/lib/apt/lists/* \
     /var/cache/debconf \
-    # удаляем встроенную библиотеку, чтобы использовалась системная
-    /opt/1cv8/current/libstdc++.so.6 \
-  && localedef -i ru_RU -c -f UTF-8 -A /usr/share/locale/locale.alias ru_RU.UTF-8
+    /tmp/*.deb \
+  # удаляем встроенную библиотеку, чтобы использовалась системна
+  && find /opt/1cv8 -name libstdc++.so.6 -delete 2>/dev/null || true
 
 ENV LANG ru_RU.UTF-8
 ENV LANGUAGE ru_RU:ru
