@@ -65,7 +65,7 @@ docker build \
     --build-arg BASE_IMAGE=onec-client-vnc \
     --build-arg BASE_TAG=$ONEC_VERSION \
     --build-arg OVM_VERSION="v1.6.2" \
-    --build-arg ONESCRIPT_VERSION="1.9.3" \
+    --build-arg ONESCRIPT_VERSION="1.9.4" \
     --build-arg ONESCRIPT_PACKAGES="add@SNAPSHOT gitsync vanessa-runner irac stebi edt-ripper" \
     -t ${DOCKER_REGISTRY_URL:+"$DOCKER_REGISTRY_URL/"}onec-client-vnc-oscript:$ONEC_VERSION \
     -f oscript/Dockerfile \
