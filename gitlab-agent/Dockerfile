@@ -14,7 +14,6 @@ RUN set -xe \
       locales \
       openssh-client \
       wget \
-  # git-lfs
   && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     git-lfs \
