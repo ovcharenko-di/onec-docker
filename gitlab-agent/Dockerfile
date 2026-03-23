@@ -22,10 +22,8 @@ RUN set -xe \
     /var/cache/debconf \
   && localedef -i ru_RU -c -f UTF-8 -A /usr/share/locale/locale.alias ru_RU.UTF-8
 
-ENV LANG ru_RU.UTF-8
+ENV PATH=${PATH}:/opt/1cv8/current
 
 EXPOSE 5900
-
-ENV PATH=${PATH}:/opt/1cv8/current
 
 ENTRYPOINT ["/init"]
