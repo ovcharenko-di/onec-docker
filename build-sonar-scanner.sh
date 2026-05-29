@@ -19,8 +19,8 @@ if [ "${NO_CACHE}" = 'true' ] ; then
     last_arg='--no-cache .'
 fi
 
-# SonarScanner CLI 8.x требует Java 21+, поэтому слой jdk собираем с JDK 21
-SONAR_JDK_VERSION="${SONAR_JDK_VERSION:-21}"
+# SonarScanner CLI 8.x требует Java 21+, поэтому слой jdk собираем с JDK 25
+SONAR_JDK_VERSION="${SONAR_JDK_VERSION:-25}"
 
 docker build \
     --pull \

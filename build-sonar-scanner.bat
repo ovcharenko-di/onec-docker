@@ -10,8 +10,8 @@ if %ERRORLEVEL% neq 0 goto end
 
 if %NO_CACHE%=="true" (SET last_arg="--no-cache .") else (SET last_arg=".")
 
-rem SonarScanner CLI 8.x требует Java 21+, поэтому слой jdk собираем с JDK 21
-if "%SONAR_JDK_VERSION%"=="" set SONAR_JDK_VERSION=21
+rem SonarScanner CLI 8.x требует Java 21+, поэтому слой jdk собираем с JDK 25
+if "%SONAR_JDK_VERSION%"=="" set SONAR_JDK_VERSION=25
 
 docker build ^
 	--pull ^
