@@ -18,7 +18,7 @@ RUN apt-get update \
   && mkdir -p -m 0755 /etc/apt/keyrings \
   && wget -qO- 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF' | \
     gpg --dearmor -o /etc/apt/keyrings/mono-official-stable.gpg \
-  && echo "deb [signed-by=/etc/apt/keyrings/mono-official-stable.gpg] https://download.mono-project.com/repo/debian stable-buster main" \
+  && echo "deb [signed-by=/etc/apt/keyrings/mono-official-stable.gpg] https://download.mono-project.com/repo/ubuntu stable-focal main" \
     > /etc/apt/sources.list.d/mono-official-stable.list \
   && apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
