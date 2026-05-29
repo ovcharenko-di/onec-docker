@@ -5,7 +5,7 @@ ARG BASE_TAG
 # BASE_IMAGE - слой client с установленным JDK (client + jdk)
 FROM ${DOCKER_REGISTRY_URL}${DOCKER_REGISTRY_URL:+/}${BASE_IMAGE}:${BASE_TAG}
 
-LABEL maintainer="Nikita Fedkin <nixel2007@gmail.com>, FirstBit"
+LABEL maintainer="Nikita Fedkin <nixel2007@gmail.com>"
 
 USER root
 
