@@ -32,6 +32,9 @@ RUN apt-get update \
 
 ENV PATH="${SONAR_SCANNER_HOME}/bin:${PATH}"
 
+# Java берётся из слоя jdk, поэтому отключаем автоскачивание JRE с сервера
+ENV SONAR_SCANNER_SKIP_JRE_PROVISIONING=true
+
 USER usr1cv8
 
 WORKDIR /usr/src
