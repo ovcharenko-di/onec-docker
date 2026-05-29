@@ -19,6 +19,13 @@ if [ "${NO_CACHE}" = 'true' ] ; then
     last_arg='--no-cache .'
 fi
 
+for var in ONEC_USERNAME ONEC_PASSWORD ONEC_VERSION; do
+    if [ -z "${!var}" ]; then
+        echo "Required environment variable $var is not set" >&2
+        exit 1
+    fi
+done
+
 # SonarScanner CLI 8.x требует Java 21+, поэтому слой jdk собираем с JDK 25
 SONAR_JDK_VERSION="${SONAR_JDK_VERSION:-25}"
 
