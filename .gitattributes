@@ -1,4 +1,5 @@
 *.sh eol=lf
+*.bat eol=crlf
 client/configs/** eol=lf
 client-vnc/configs/** eol=lf
 swarm-jenkins-agent/configs/** eol=lf
