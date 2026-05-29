@@ -87,6 +87,13 @@ env.bat
     - build-edt-k8s-agent.sh
     - build-oscript-k8s-agent.sh
 
+3. Отдельные образы:
+
+    - build-server.sh
+    - build-crs.sh
+    - build-executor.sh
+    - build-sonar-scanner.sh
+
 ## Как использовать готовые дистрибутивы
 
 Вы можете использовать готовые дистрибутивы платформы, для этого достаточно разместить их в папке `distr`. Скрипты будут автоматически использовать их для сборки образа.
@@ -172,11 +179,13 @@ docker build --build-arg ONEC_USERNAME=${ONEC_USERNAME} \
 
 [(Наверх)](#оглавление)
 
-Образ с [SonarScanner CLI](https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner/) поверх слоя `client` (без поддержки VNC). Используется дистрибутив со встроенной JRE, поэтому слой `jdk` не требуется. Образ предварительно должен быть собран слой `onec-client`.
+Образ с [SonarScanner CLI](https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner/) поверх слоёв `client` + `jdk` (без поддержки VNC). Java предоставляется слоем `jdk`. Для сборки всей цепочки слоёв (`client` → `jdk` → `sonar-scanner`) используйте скрипт `build-sonar-scanner.sh` (или `build-sonar-scanner.bat` в Windows).
+
+Либо соберите только финальный слой поверх уже собранного образа `onec-client-jdk`:
 
 ```bash
 docker build --build-arg DOCKER_REGISTRY_URL=${DOCKER_REGISTRY_URL} \
-  --build-arg BASE_IMAGE=onec-client \
+  --build-arg BASE_IMAGE=onec-client-jdk \
   --build-arg BASE_TAG=${ONEC_VERSION} \
   -t ${DOCKER_REGISTRY_URL}/onec-sonar-scanner:${ONEC_VERSION} \
   -f sonar-scanner/Dockerfile .

@@ -26,7 +26,13 @@
 ## SonarScanner (анализ кода, без vnc)
 
 * client
+* jdk
 * sonar-scanner
+
+Реализовано в скриптах:
+
+* [build-sonar-scanner.sh](build-sonar-scanner.sh)
+* [build-sonar-scanner.bat](build-sonar-scanner.bat)
 
 ## 1C как Jenkins агент
 

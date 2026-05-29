@@ -49,7 +49,7 @@ client-nls:
 
 sonar-scanner:
 	docker build --build-arg DOCKER_REGISTRY_URL=${DOCKER_REGISTRY_URL} \
-		--build-arg BASE_IMAGE=onec-client \
+		--build-arg BASE_IMAGE=onec-client-jdk \
 		--build-arg BASE_TAG=${ONEC_VERSION} \
 		-t ${DOCKER_REGISTRY_URL}/onec-sonar-scanner:${ONEC_VERSION} \
 		-f sonar-scanner/Dockerfile .
