@@ -6,6 +6,9 @@ FROM ${DOCKER_REGISTRY_URL:+"$DOCKER_REGISTRY_URL/"}${BASE_IMAGE}:${BASE_TAG}
 
 LABEL maintainer="Nikita Gryzlov <NikGryzlov@1bit.com>, FirstBit"
 
+# Установка JDK требует root (например, когда базовый слой client завершается USER usr1cv8)
+USER root
+
 # Install OpenJDK
 ARG OPENJDK_VERSION=17
 

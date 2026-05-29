@@ -4,11 +4,11 @@ docker login -u %DOCKER_LOGIN% -p %DOCKER_PASSWORD% %DOCKER_REGISTRY_URL%
 
 if %ERRORLEVEL% neq 0 goto end
 
-if %DOCKER_SYSTEM_PRUNE%=="true" docker system prune -af
+if "%DOCKER_SYSTEM_PRUNE%"=="true" docker system prune -af
 
 if %ERRORLEVEL% neq 0 goto end
 
-if %NO_CACHE%=="true" (SET last_arg="--no-cache .") else (SET last_arg=".")
+if "%NO_CACHE%"=="true" (SET last_arg="--no-cache .") else (SET last_arg=".")
 
 rem SonarScanner CLI 8.x требует Java 21+, поэтому слой jdk собираем с JDK 25
 if "%SONAR_JDK_VERSION%"=="" set SONAR_JDK_VERSION=25
