@@ -10,7 +10,8 @@ LABEL maintainer="Nikita Gryzlov <NikGryzlov@1bit.com>, FirstBit"
 USER root
 
 # Версия SonarScanner CLI. Java предоставляется слоем jdk.
-ARG SONAR_SCANNER_VERSION=5.0.1.3006
+# SonarScanner CLI 8.x требует Java 21+ (см. build-sonar-scanner.sh).
+ARG SONAR_SCANNER_VERSION=8.1.0.6389
 
 ENV SONAR_SCANNER_HOME=/opt/sonar-scanner
 

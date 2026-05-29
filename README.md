@@ -179,9 +179,9 @@ docker build --build-arg ONEC_USERNAME=${ONEC_USERNAME} \
 
 [(Наверх)](#оглавление)
 
-Образ с [SonarScanner CLI](https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner/) поверх слоёв `client` + `jdk` (без поддержки VNC). Java предоставляется слоем `jdk`. Для сборки всей цепочки слоёв (`client` → `jdk` → `sonar-scanner`) используйте скрипт `build-sonar-scanner.sh` (или `build-sonar-scanner.bat` в Windows).
+Образ с [SonarScanner CLI](https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner/) поверх слоёв `client` + `jdk` (без поддержки VNC). Java предоставляется слоем `jdk`, автоскачивание JRE с сервера отключено (`SONAR_SCANNER_SKIP_JRE_PROVISIONING=true`). SonarScanner CLI 8.x требует Java 21+, поэтому скрипт сборки собирает слой `jdk` с JDK 21 (`SONAR_JDK_VERSION`, по умолчанию `21`). Для сборки всей цепочки слоёв (`client` → `jdk` → `sonar-scanner`) используйте скрипт `build-sonar-scanner.sh` (или `build-sonar-scanner.bat` в Windows).
 
-Либо соберите только финальный слой поверх уже собранного образа `onec-client-jdk`:
+Либо соберите только финальный слой поверх уже собранного образа `onec-client-jdk` (собранного с JDK 21):
 
 ```bash
 docker build --build-arg DOCKER_REGISTRY_URL=${DOCKER_REGISTRY_URL} \

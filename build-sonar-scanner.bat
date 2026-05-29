@@ -10,6 +10,9 @@ if %ERRORLEVEL% neq 0 goto end
 
 if %NO_CACHE%=="true" (SET last_arg="--no-cache .") else (SET last_arg=".")
 
+rem SonarScanner CLI 8.x требует Java 21+, поэтому слой jdk собираем с JDK 21
+if "%SONAR_JDK_VERSION%"=="" set SONAR_JDK_VERSION=21
+
 docker build ^
 	--pull ^
 	--build-arg DOCKER_REGISTRY_URL=library ^
@@ -43,7 +46,7 @@ docker build ^
 	--build-arg DOCKER_REGISTRY_URL=%DOCKER_REGISTRY_URL% ^
 	--build-arg BASE_IMAGE=onec-client ^
 	--build-arg BASE_TAG=%ONEC_VERSION% ^
-	--build-arg OPENJDK_VERSION=%OPENJDK_VERSION% ^
+	--build-arg OPENJDK_VERSION=%SONAR_JDK_VERSION% ^
 	-t %DOCKER_REGISTRY_URL%/onec-client-jdk:%ONEC_VERSION% ^
 	-f jdk/Dockerfile ^
 	%last_arg%
