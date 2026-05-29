@@ -23,6 +23,11 @@
 * oscript
 * test-utils
 
+## SonarScanner (анализ кода, без vnc)
+
+* client
+* sonar-scanner
+
 ## 1C как Jenkins агент
 
 * client

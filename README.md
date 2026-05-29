@@ -18,6 +18,7 @@
   - [Клиент](#клиент)
   - [Клиент с поддержкой VNC](#клиент-с-поддержкой-vnc)
   - [Клиент с дополнительными языками](#клиент-с-дополнительными-языками)
+  - [SonarScanner](#sonarscanner)
   - [Тонкий клиент](#тонкий-клиент)
   - [Тонкий клиент с дополнительными языками](#тонкий-клиент-с-дополнительными-языками)
   - [Хранилище конфигурации](#хранилище-конфигурации)
@@ -165,6 +166,20 @@ docker build --build-arg ONEC_USERNAME=${ONEC_USERNAME} \
   --build-arg nls_enabled=true \
   -t ${DOCKER_REGISTRY_URL}/onec-client-nls:${ONEC_VERSION} \
   -f client/Dockerfile .
+```
+
+## SonarScanner
+
+[(Наверх)](#оглавление)
+
+Образ с [SonarScanner CLI](https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner/) поверх слоя `client` (без поддержки VNC). Используется дистрибутив со встроенной JRE, поэтому слой `jdk` не требуется. Образ предварительно должен быть собран слой `onec-client`.
+
+```bash
+docker build --build-arg DOCKER_REGISTRY_URL=${DOCKER_REGISTRY_URL} \
+  --build-arg BASE_IMAGE=onec-client \
+  --build-arg BASE_TAG=${ONEC_VERSION} \
+  -t ${DOCKER_REGISTRY_URL}/onec-sonar-scanner:${ONEC_VERSION} \
+  -f sonar-scanner/Dockerfile .
 ```
 
 ## Тонкий клиент

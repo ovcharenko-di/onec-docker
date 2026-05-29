@@ -2,7 +2,7 @@ BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 GIT_HASH = $(shell git show --format="%h" HEAD | head -1)
 VERSION ?= latest
 
-.PHONY: all server server-nls client client-vnc client-nls thin-client thin-client-nls crs rac-gui gitsync oscript oscript-utils runner
+.PHONY: all server server-nls client client-vnc client-nls sonar-scanner thin-client thin-client-nls crs rac-gui gitsync oscript oscript-utils runner
 
 all: server client thin-client crs
 
@@ -46,6 +46,14 @@ client-nls:
 		-t ${DOCKER_REGISTRY_URL}/onec-client-nls:${ONEC_VERSION} \
 		-f client/Dockerfile .
 	docker tag ${DOCKER_REGISTRY_URL}/onec-client-nls:${ONEC_VERSION} ${DOCKER_REGISTRY_URL}/onec-client-nls:latest
+
+sonar-scanner:
+	docker build --build-arg DOCKER_REGISTRY_URL=${DOCKER_REGISTRY_URL} \
+		--build-arg BASE_IMAGE=onec-client \
+		--build-arg BASE_TAG=${ONEC_VERSION} \
+		-t ${DOCKER_REGISTRY_URL}/onec-sonar-scanner:${ONEC_VERSION} \
+		-f sonar-scanner/Dockerfile .
+	docker tag ${DOCKER_REGISTRY_URL}/onec-sonar-scanner:${ONEC_VERSION} ${DOCKER_REGISTRY_URL}/onec-sonar-scanner:latest
 
 thin-client:
 	docker build --build-arg ONEC_USERNAME=${ONEC_USERNAME} \
