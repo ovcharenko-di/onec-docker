@@ -23,7 +23,7 @@ jobs:
     - name: Maximize build space
       uses: jlumbroso/free-disk-space@main 
     - name: Checkout repository
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         fetch-depth: 0
         repository: ${{ github.event.workflow_run.head_repository.full_name }}
