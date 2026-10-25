@@ -51,4 +51,3 @@ if [[ -n "$DOCKER_REGISTRY_URL" ]]; then
 else
   echo "DOCKER_REGISTRY_URL not set, skipping docker push."
 fi
-
